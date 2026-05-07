@@ -1,9 +1,12 @@
 {
   "name": "client",
   "private": true,
-  "scripts": {
-    "dev": "next dev"
-  },
+"scripts": {
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "vercel-build": "next build"
+},
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "axios": "^1.16.0",
