@@ -85,7 +85,7 @@ jobDescription
 const response =
 await axios.post(
 
-'http://localhost:5000/api/analyze',
+'https://resumemind-ai.onrender.com/api/analyze',
 
 formData
 
