@@ -18,7 +18,8 @@ return(
 <div
 className='card'
 style={{
-marginTop:'60px'
+marginTop:'60px',
+padding:'40px'
 }}
 >
 
@@ -29,18 +30,23 @@ marginBottom:'20px'
 }}
 >
 
-My Profile
+Profile Dashboard
 
 </h1>
 
 <p
 style={{
 color:'#94a3b8',
-lineHeight:'1.8'
+lineHeight:'1.8',
+fontSize:'18px'
 }}
 >
 
 Welcome to your AI Resume profile dashboard.
+
+Manage your resume insights,
+career analysis,
+and AI recommendations here.
 
 </p>
 
