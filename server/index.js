@@ -28,6 +28,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
+      "https://resume-mind-ai-plum.vercel.app",
       "https://resumemind-ai.vercel.app"
     ],
     methods: ["GET", "POST"],
