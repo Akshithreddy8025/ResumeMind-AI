@@ -1,61 +1,49 @@
 'use client'
 
 import Navbar from '../../components/Navbar'
+import AuthGuard from '../../components/AuthGuard'
 
-export default function Profile(){
+export default function Profile() {
+  return (
+    <AuthGuard>
+      <div className="page">
+        <div className="glow one"></div>
+        <div className="glow two"></div>
 
-return(
+        <div className="container">
+          <Navbar />
 
-<div className='page'>
+          <div
+            className="card"
+            style={{
+              marginTop: '60px',
+              padding: '40px'
+            }}
+          >
+            <h1
+              style={{
+                fontSize: '54px',
+                marginBottom: '20px'
+              }}
+            >
+              Profile Dashboard
+            </h1>
 
-<div className='glow one'></div>
-<div className='glow two'></div>
+            <p
+              style={{
+                color: '#94a3b8',
+                lineHeight: '1.8',
+                fontSize: '18px'
+              }}
+            >
+              Welcome to your AI Resume profile dashboard.
 
-<div className='container'>
-
-<Navbar/>
-
-<div
-className='card'
-style={{
-marginTop:'60px',
-padding:'40px'
-}}
->
-
-<h1
-style={{
-fontSize:'54px',
-marginBottom:'20px'
-}}
->
-
-Profile Dashboard
-
-</h1>
-
-<p
-style={{
-color:'#94a3b8',
-lineHeight:'1.8',
-fontSize:'18px'
-}}
->
-
-Welcome to your AI Resume profile dashboard.
-
-Manage your resume insights,
-career analysis,
-and AI recommendations here.
-
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-)
-
+              Manage your resume insights, career analysis,
+              and AI recommendations here.
+            </p>
+          </div>
+        </div>
+      </div>
+    </AuthGuard>
+  )
 }

@@ -1,183 +1,207 @@
-const express = require('express')
+const express = require("express");
+const cors = require("cors");
+const multer = require("multer");
+const pdfParseModule = require("pdf-parse");
+const pdfParse = pdfParseModule.default || pdfParseModule;
+const fs = require("fs");
 
-const cors = require('cors')
+require("dotenv").config();
 
-const multer = require('multer')
-
-const pdfParse = require('pdf-parse')
-
-const fs = require('fs')
-
-require('dotenv').config()
+const { extractSkills } = require("./utils/skillExtractor");
+const { calculateScores } = require("./utils/scoreCalculator");
 
 const {
-analyzeResume
-} = require('./services/geminiService')
+  generateResumeFeedback
+} = require("./services/geminiService");
 
-const app = express()
+const {
+  generateOptimizedResume
+} = require("./services/resumeBuilderService");
 
+const app = express();
 
 // ===============================
 // MIDDLEWARE
 // ===============================
 
-app.use(cors())
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://resumemind-ai.vercel.app"
+    ],
+    methods: ["GET", "POST"],
+    credentials: true
+  })
+);
 
-app.use(express.json())
-
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 // ===============================
 // MULTER CONFIG
 // ===============================
 
 const upload = multer({
+  dest: "uploads/",
+  limits: {
+    fileSize: 5 * 1024 * 1024
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype !== "application/pdf") {
+      return cb(new Error("Only PDF files are allowed"));
+    }
 
-dest:'uploads/'
-
-})
-
+    cb(null, true);
+  }
+});
 
 // ===============================
 // TEST ROUTE
 // ===============================
 
-app.get('/',(req,res)=>{
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "ResumeMind AI Backend Running 🚀"
+  });
+});
 
-res.json({
-
-message:'Ethara AI Backend Running 🚀'
-
-})
-
-})
-
+app.get("/api/health", (req, res) => {
+  res.json({
+    success: true,
+    message: "Backend health check passed"
+  });
+});
 
 // ===============================
 // ANALYZE RESUME ROUTE
 // ===============================
 
-app.post(
+app.post("/api/analyze", upload.single("resume"), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Resume file missing"
+      });
+    }
 
-'/api/analyze',
+    const company = req.body.company || "";
+    const role = req.body.role || "";
+    const jobDescription = req.body.jobDescription || "";
 
-upload.single('resume'),
+    const pdfBuffer = fs.readFileSync(req.file.path);
+    const parsed = await pdfParse(pdfBuffer);
 
-async(req,res)=>{
+    const resumeText = parsed.text || "";
+    const limitedResumeText = resumeText.slice(0, 7000);
 
-try{
+    const resumeSkills = extractSkills(limitedResumeText);
+    const jdSkills = extractSkills(jobDescription);
 
-// CHECK FILE
+    const scores = calculateScores({
+      resumeText: limitedResumeText,
+      jobDescription,
+      resumeSkills,
+      jdSkills,
+      company,
+      role
+    });
 
-if(!req.file){
+    const feedback = await generateResumeFeedback({
+      resumeText: limitedResumeText,
+      company,
+      role,
+      jobDescription,
+      scores
+    });
 
-return res.status(400).json({
+    fs.unlinkSync(req.file.path);
 
-success:false,
+    const analysis = {
+      ...scores,
+      ...feedback,
+      resumeText: limitedResumeText,
+      detectedSkills: resumeSkills,
+      matchedSkills: scores.matchedSkills.map((skill) => skill.name),
+      missingSkills: scores.missingSkills.map((skill) => skill.name),
+      extraSkills: scores.extraSkills.map((skill) => skill.name)
+    };
 
-message:'Resume file missing'
+    return res.json({
+      success: true,
+      analysis
+    });
+  } catch (error) {
+    console.log("Analyze Error:", error);
 
-})
+    if (req.file) {
+      try {
+        fs.unlinkSync(req.file.path);
+      } catch (err) {
+        console.log("File Delete Error:", err);
+      }
+    }
 
-}
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Resume analysis failed"
+    });
+  }
+});
 
+// ===============================
+// GENERATE OPTIMIZED RESUME ROUTE
+// ===============================
 
-// READ PDF
+app.post("/api/resume/generate-optimized", async (req, res) => {
+  try {
+    const {
+      oldResumeText,
+      analysis,
+      userAnswers,
+      targetRole,
+      targetCompany,
+      jobDescription
+    } = req.body;
 
-const pdfBuffer =
-fs.readFileSync(req.file.path)
+    if (!userAnswers) {
+      return res.status(400).json({
+        success: false,
+        message: "User answers are required."
+      });
+    }
 
+    const optimizedResume = await generateOptimizedResume({
+      oldResumeText,
+      analysis,
+      userAnswers,
+      targetRole,
+      targetCompany,
+      jobDescription
+    });
 
-// PARSE PDF
+    return res.status(200).json({
+      success: true,
+      data: optimizedResume
+    });
+  } catch (error) {
+    console.error("Generate optimized resume route error:", error);
 
-const parsed =
-await pdfParse(pdfBuffer)
-
-
-// GEMINI AI ANALYSIS
-
-const analysis =
-await analyzeResume(
-
-parsed.text,
-
-req.body.company,
-
-req.body.role,
-
-req.body.jobDescription
-
-)
-
-
-// DELETE FILE AFTER ANALYSIS
-
-fs.unlinkSync(req.file.path)
-
-
-// SUCCESS RESPONSE
-
-res.json({
-
-success:true,
-
-analysis
-
-})
-
-}catch(error){
-
-console.log(error)
-
-
-// DELETE FILE IF ERROR OCCURS
-
-if(req.file){
-
-try{
-
-fs.unlinkSync(req.file.path)
-
-}catch(err){
-
-console.log(err)
-
-}
-
-}
-
-
-console.log(error)
-
-res.status(500).json({
-
-success:false,
-
-message:error.message,
-
-error:error
-
-})
-
-}
-
-}
-
-)
-
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Failed to generate optimized resume."
+    });
+  }
+});
 
 // ===============================
 // SERVER START
 // ===============================
 
-const PORT =
-process.env.PORT || 5000
+const PORT = process.env.PORT || 5000;
 
-app.listen(PORT,()=>{
-
-console.log(
-
-`Server running on port ${PORT} 🚀`
-
-)
-
-})
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT} 🚀`);
+});

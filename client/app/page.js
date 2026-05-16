@@ -3,109 +3,97 @@ import FAQ from '../components/FAQ'
 import Footer from '../components/Footer'
 import Link from 'next/link'
 
-export default function Home(){
+export default function Home() {
+  return (
+    <div className='page'>
 
-return(
+      <div className='glow one'></div>
+      <div className='glow two'></div>
 
-<div className="page">
+      <div className='container'>
 
-<div className="glow one"></div>
-<div className="glow two"></div>
+        <Navbar />
 
-<div className="container">
+        {/* HERO SECTION */}
 
-<Navbar/>
+        <div className='hero'>
 
-{/* HERO SECTION */}
+          <h1>
+            Build Your <span className='gradient'>
+              AI Career
+            </span>
 
-<div className="hero">
+            <br />
 
-<h1>
-Build Your <span className="gradient">
-AI Career
-</span>
+            With Smart Resume Intelligence
+          </h1>
 
-<br/>
+          <p>
+            Premium AI-powered resume analysis platform with ATS scoring,
+            company-specific role matching, Gemini AI integration,
+            and intelligent career recommendations.
+          </p>
 
-With Smart Resume Intelligence
+          <div className='hero-buttons'>
 
-</h1>
+            <Link
+              href='/login'
+              className='button'
+            >
+              Get Started
+            </Link>
 
-<p>
+            <Link
+              href='/dashboard'
+              className='button secondary-btn'
+            >
+              Try Dashboard
+            </Link>
 
-Premium AI-powered resume analysis platform with ATS scoring,
-company-specific role matching, Gemini AI integration,
-and intelligent career recommendations.
+          </div>
 
-</p>
+        </div>
 
-<div className='hero-buttons'>
+        {/* FEATURES SECTION */}
 
-<Link
-href="/login"
-className="button"
->
+        <div className='features-grid'>
 
-Get Started
+          <div className='card'>
+            <h2>AI ATS Scoring</h2>
 
-</Link>
+            <p>
+              Get recruiter-style ATS analysis with keyword matching.
+            </p>
+          </div>
 
+          <div className='card'>
+            <h2>Company Matching</h2>
 
+            <p>
+              Analyze your resume for Google, Amazon, Meta, and more.
+            </p>
+          </div>
 
-</div>
+          <div className='card'>
+            <h2>Gemini AI Suggestions</h2>
 
-</div>
+            <p>
+              Improve resume bullets and skills using Gemini AI.
+            </p>
+          </div>
 
+        </div>
 
-{/* FEATURES SECTION */}
+        {/* FAQ */}
 
-<div className='features-grid'>
+        <FAQ />
 
-<div className='card'>
+        {/* FOOTER */}
 
-<h2>AI ATS Scoring</h2>
+        <Footer />
 
-<p>
-Get recruiter-style ATS analysis with keyword matching.
-</p>
+      </div>
 
-</div>
-
-<div className='card'>
-
-<h2>Company Matching</h2>
-
-<p>
-Analyze your resume for Google, Amazon, Meta, and more.
-</p>
-
-</div>
-
-<div className='card'>
-
-<h2>Gemini AI Suggestions</h2>
-
-<p>
-Improve resume bullets and skills using Gemini AI.
-</p>
-
-</div>
-
-</div>
-
-
-{/* FAQ */}
-
-<FAQ/>
-
-{/* FOOTER */}
-
-<Footer/>
-
-</div>
-
-</div>
-
-)
-
+    </div>
+  )
 }

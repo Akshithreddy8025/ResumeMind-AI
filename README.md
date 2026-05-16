@@ -387,4 +387,8 @@ If you like this project:
 
 📜 License
 
+<<<<<<< HEAD
 This project is developed for educational and portfolio purposes.
+=======
+This project is developed for educational and portfolio purposes.
+>>>>>>> 03627c8 (Fix resume template A4 PDF layout and optimized resume preview)

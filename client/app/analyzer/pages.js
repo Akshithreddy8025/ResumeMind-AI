@@ -1,34 +1,25 @@
 'use client'
-import Navbar from '../../components/Navbar'
-import UploadBox from '../../components/UploadBox'
 
-export default function Analyzer(){
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import AuthGuard from '../../components/AuthGuard'
 
-return(
-<div className='page'>
+export default function Analyzer() {
+  const router = useRouter()
 
-<div className='container'>
+  useEffect(() => {
+    router.replace('/dashboard')
+  }, [router])
 
-<Navbar/>
-
-<div style={{padding:'80px 0'}}>
-
-<h1 style={{fontSize:'56px'}}>
-AI Resume Analyzer
-</h1>
-
-<p style={{marginTop:'20px',color:'#cbd5e1'}}>
-Upload your resume and get ATS score, keyword analysis,
-company matching, and Gemini AI suggestions.
-</p>
-
-<UploadBox/>
-
-</div>
-
-</div>
-
-</div>
-)
-
+  return (
+    <AuthGuard>
+      <div className="page">
+        <div className="container">
+          <p style={{ color: '#cbd5e1', padding: '80px 0' }}>
+            Opening analyzer...
+          </p>
+        </div>
+      </div>
+    </AuthGuard>
+  )
 }

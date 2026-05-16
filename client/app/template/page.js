@@ -1,126 +1,85 @@
 'use client'
+
 import Navbar from '../../components/Navbar'
+import AuthGuard from '../../components/AuthGuard'
 
-export default function Templates(){
+export default function Templates() {
+  const templates = [
+    {
+      name: 'AI Engineer Resume',
+      description:
+        'Modern ATS-friendly resume template for AI, ML, NLP, and computer vision roles.',
+      tag: 'AI / ML'
+    },
+    {
+      name: 'Full Stack Developer Resume',
+      description:
+        'Professional developer resume template for React, Node.js, APIs, and database projects.',
+      tag: 'Developer'
+    },
+    {
+      name: 'Data Scientist Resume',
+      description:
+        'Optimized for analytics, machine learning, visualization, and business intelligence roles.',
+      tag: 'Data'
+    },
+    {
+      name: 'Cloud Engineer Resume',
+      description:
+        'Perfect for AWS, DevOps, Docker, CI/CD, deployment, and cloud infrastructure profiles.',
+      tag: 'Cloud'
+    }
+  ]
 
-const templates = [
+  return (
+    <AuthGuard>
+      <div className="page">
+        <div className="glow one"></div>
+        <div className="glow two"></div>
 
-{
-name:'AI Engineer Resume',
-description:'Modern ATS-friendly AI resume template.'
-},
+        <div className="container">
+          <Navbar />
 
-{
-name:'Full Stack Developer Resume',
-description:'Professional developer resume template.'
-},
+          <section className="templates-section">
+            <div className="section-heading left">
+              <h1>
+                Resume Templates
+              </h1>
 
-{
-name:'Data Scientist Resume',
-description:'Optimized for AI and analytics roles.'
-},
+              <p>
+                Choose professional ATS-friendly resume templates for different career paths.
+              </p>
+            </div>
 
-{
-name:'Cloud Engineer Resume',
-description:'Perfect for AWS and DevOps profiles.'
-}
+            <div className="template-grid">
+              {
+                templates.map((item, index) => (
+                  <div
+                    className="card template-card"
+                    key={index}
+                  >
+                    <span className="template-tag">
+                      {item.tag}
+                    </span>
 
-]
+                    <h2>
+                      {item.name}
+                    </h2>
 
-return(
+                    <p>
+                      {item.description}
+                    </p>
 
-<div className='page'>
-
-<div className='glow one'></div>
-<div className='glow two'></div>
-
-<div className='container'>
-
-<Navbar/>
-
-<div style={{padding:'80px 0'}}>
-
-<h1
-style={{
-fontSize:'56px',
-marginBottom:'20px'
-}}
->
-
-Resume Templates
-
-</h1>
-
-<p
-style={{
-color:'#94a3b8',
-marginBottom:'40px'
-}}
->
-
-Choose professional ATS-friendly resume templates.
-
-</p>
-
-<div
-style={{
-display:'grid',
-gridTemplateColumns:
-'repeat(auto-fit,minmax(280px,1fr))',
-gap:'20px'
-}}
->
-
-{
-templates.map((item,index)=>(
-
-<div
-className='card'
-key={index}
->
-
-<h2>
-
-{item.name}
-
-</h2>
-
-<p
-style={{
-marginTop:'15px',
-lineHeight:'1.7',
-color:'#94a3b8'
-}}
->
-
-{item.description}
-
-</p>
-
-<button
-className='button'
-style={{
-marginTop:'20px'
-}}
->
-
-Use Template
-
-</button>
-
-</div>
-
-))
-}
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-)
-
+                    <button className="button">
+                      Use Template
+                    </button>
+                  </div>
+                ))
+              }
+            </div>
+          </section>
+        </div>
+      </div>
+    </AuthGuard>
+  )
 }
