@@ -1,394 +1,252 @@
-🚀 ResumeMind AI
+# 🚀 ResumeMind AI
 
-> AI-Powered Resume Analyzer Platform with ATS Scoring, Company Matching & Skill Intelligence
-
-
-
-     
-
+> AI-Powered Resume Analyzer Platform with ATS Scoring, Company Matching, Skill Intelligence & One-Page Resume Builder
 
 ---
 
-🌟 Overview
+## 🌟 Overview
 
-ResumeMind AI is a modern AI-powered resume analysis platform designed to help students and job seekers optimize their resumes for ATS systems and company-specific roles.
+**ResumeMind AI** is a modern AI-powered resume analysis platform designed to help students, freshers, and job seekers optimize their resumes for ATS systems and company-specific roles.
 
-The platform intelligently analyzes uploaded resumes using Gemini AI and provides:
+The platform analyzes uploaded PDF resumes using AI and provides detailed insights such as ATS score, company match score, missing skills, hiring probability, strengths, weaknesses, and improvement suggestions.
 
-✅ ATS Score Analysis
-
-✅ Company Match Score
-
-✅ Missing Skills Detection
-
-✅ Resume Strengths & Weaknesses
-
-✅ AI Improvement Suggestions
-
-✅ Hiring Probability
-
-✅ Dynamic Skill Analytics Graphs
-
-✅ Role-Based Resume Optimization
-
+ResumeMind AI also helps users create a cleaner **one-page ATS-friendly resume** by asking for confirmed skills, projects, achievements, education, and role-specific details.
 
 Built with a premium SaaS-style interface, ResumeMind AI delivers a professional and interactive user experience.
 
+---
+
+## ✨ Features
+
+### 🔐 Authentication System
+
+- Email and password authentication
+- Google sign-in using Firebase
+- Persistent login sessions
+- Protected dashboard and service routes
+- Users must login before accessing main platform features
 
 ---
 
-✨ Features
-
-🔐 Authentication System
-
-Email & Password Authentication
-
-Google Sign-In using Firebase
-
-Persistent Login Sessions
-
-Secure Authentication Flow
-
-
-
----
-
-📄 AI Resume Analyzer
+### 📄 AI Resume Analyzer
 
 Upload resumes in PDF format and get:
 
-ATS Resume Score
-
-Company Compatibility Score
-
-Skill Gap Analysis
-
-Resume Summary
-
-AI Suggestions
-
-Missing Keywords
-
-Hiring Probability
-
-
+- ATS resume score
+- Company compatibility score
+- Combined score
+- Hiring probability
+- Project strength score
+- Overall resume readiness level
+- Resume summary
+- AI improvement suggestions
+- Resume strengths and weaknesses
+- Missing skills and matched skills
 
 ---
 
-📊 Dynamic Skill Analytics
+### 📊 Dynamic Skill Analytics
 
-Interactive graphs dynamically generated based on:
+Interactive analytics are generated based on:
 
-Uploaded Resume Skills
-
-Job Description Keywords
-
-Selected Company
-
-Selected Role
-
+- Uploaded resume skills
+- Job description keywords
+- Selected company
+- Selected role
 
 Charts include:
 
-Skill Match Bar Graphs
-
-Skill Strength Distribution
-
-Missing Skills Analysis
-
-
+- Skill match bar graphs
+- Skill category strength
+- Missing skills analysis
+- Detected skills overview
 
 ---
 
-🏢 Company-Based Matching
+### 🏢 Company-Based Matching
 
-Supports role analysis for companies like:
+ResumeMind AI supports role-based analysis for multiple companies including:
 
-Google
-
-Microsoft
-
-Amazon
-
-OpenAI
-
-Meta
-
-Netflix
-
-Apple
-
-Adobe
-
-NVIDIA
-
-Infosys
-
-TCS
-
-Accenture
-
-Deloitte
-
-Uber
-
-Spotify
-
-Swiggy
-
-Flipkart
-
-And more...
-
-
+- Google
+- Microsoft
+- Amazon
+- OpenAI
+- Meta
+- Netflix
+- Apple
+- Adobe
+- NVIDIA
+- Infosys
+- TCS
+- Accenture
+- Deloitte
+- Uber
+- Spotify
+- Swiggy
+- Flipkart
+- And more
 
 ---
 
-💼 Supported Roles
+### 💼 Supported Roles
 
-AI Engineer
-
-ML Engineer
-
-Data Scientist
-
-Full Stack Developer
-
-Frontend Developer
-
-Backend Developer
-
-DevOps Engineer
-
-Cloud Engineer
-
-Cyber Security Analyst
-
-Software Engineer
-
-Product Manager
-
-UI/UX Designer
-
-Blockchain Developer
-
-
+- AI Engineer
+- ML Engineer
+- Data Scientist
+- Full Stack Developer
+- Frontend Developer
+- Backend Developer
+- DevOps Engineer
+- Cloud Engineer
+- Cyber Security Analyst
+- Software Engineer
+- Product Manager
+- UI/UX Designer
+- Blockchain Developer
 
 ---
 
-🛠️ Tech Stack
+### 🧾 AI Resume Rebuilder
 
-Category	Technologies
+After resume analysis, users can generate an improved resume by answering structured questions about:
 
-Frontend	Next.js 16, React 18
-Backend	Node.js, Express.js
-Authentication	Firebase Authentication
-AI Engine	Gemini AI
-Charts	Recharts
-File Upload	React Dropzone, Multer
-Resume Parsing	PDF-Parse
-Styling	Custom CSS, Glassmorphism UI
-Deployment	Vercel + Render
+- Skills
+- Projects
+- Education
+- Certifications
+- Achievements
+- Experience
+- Target role
+- Target company
 
-
+The generated resume is based only on confirmed user information and avoids fake skills or fake achievements.
 
 ---
 
-📁 Project Structure
+### 📥 One-Page Resume Download
 
+ResumeMind AI supports downloading optimized resumes in clean professional templates.
+
+The generated resume follows company resume rules:
+
+- Single-page resume format
+- ATS-friendly structure
+- Clean professional layout
+- No tables
+- No images
+- No icons
+- No progress bars
+- Clear section headings
+- Role-specific keywords
+- Short impact-focused bullet points
+
+---
+
+## 🧩 Resume Creation Rules
+
+ResumeMind AI follows standard resume rules used for company applications.
+
+### For Students and Freshers
+
+- Resume should preferably be one page
+- Use only real skills and real project experience
+- Add 2–3 strong projects
+- Keep bullet points short and impact-focused
+- Add measurable achievements where possible
+- Avoid unnecessary personal details
+- Avoid fake internships or fake work experience
+
+### ATS-Friendly Rules
+
+The resume avoids:
+
+- Complex tables
+- Heavy graphics
+- Images
+- Icons
+- Text boxes
+- Unreadable fonts
+- Over-designed layouts
+
+The resume uses:
+
+- Standard headings
+- Clean formatting
+- Simple bullet points
+- Readable font size
+- Role-specific keywords
+- Proper spacing and margins
+
+---
+
+## 🛠️ Tech Stack
+
+| Category | Technologies |
+|---|---|
+| Frontend | Next.js, React |
+| Backend | Node.js, Express.js |
+| Authentication | Firebase Authentication |
+| AI Engine | Gemini AI |
+| Charts | Recharts |
+| File Upload | React Dropzone, Multer |
+| Resume Parsing | PDF-Parse |
+| Styling | Custom CSS, Glassmorphism UI |
+| Deployment | Vercel + Render |
+
+---
+
+## 📁 Project Structure
+
+```txt
 AI-platform/
 │
 ├── client/
 │   ├── app/
+│   │   ├── analyzer/
+│   │   ├── company-match/
+│   │   ├── dashboard/
+│   │   ├── login/
+│   │   ├── profile/
+│   │   ├── signup/
+│   │   ├── template/
+│   │   ├── globals.css
+│   │   ├── layout.js
+│   │   └── page.js
+│   │
 │   ├── components/
+│   │   ├── ATSCard.jsx
+│   │   ├── AuthGuard.jsx
+│   │   ├── AuthProvider.jsx
+│   │   ├── Navbar.jsx
+│   │   ├── OptimizedResumePreview.jsx
+│   │   ├── ResumeBuilderWizard.jsx
+│   │   ├── SkillChart.jsx
+│   │   └── UploadBox.jsx
+│   │
+│   ├── data/
+│   │   └── companyRoles.js
+│   │
 │   ├── lib/
-│   ├── public/
+│   │   ├── api.js
+│   │   └── firebase.js
+│   │
 │   └── package.json
 │
 ├── server/
-│   ├── routes/
-│   ├── controllers/
+│   ├── data/
+│   │   └── skills.js
+│   │
 │   ├── services/
+│   │   ├── geminiService.js
+│   │   └── resumeBuilderService.js
+│   │
+│   ├── utils/
+│   │   ├── scoreCalculator.js
+│   │   └── skillExtractor.js
+│   │
 │   ├── uploads/
+│   ├── index.js
 │   └── package.json
 │
-└── README.md
-
-
----
-
-⚙️ Installation & Setup
-
-1️⃣ Clone Repository
-
-git clone https://github.com/Akshithreddy8025/ResumeMind-AI.git
-
-
----
-
-2️⃣ Frontend Setup
-
-cd client
-npm install
-npm run dev
-
-Frontend runs on:
-
-http://localhost:3000
-
-
----
-
-3️⃣ Backend Setup
-
-cd server
-npm install
-npm run dev
-
-Backend runs on:
-
-http://localhost:5000
-
-
----
-
-🔑 Environment Variables
-
-Create:
-
-server/.env
-
-Add:
-
-GEMINI_API_KEY=your_gemini_api_key
-
-
----
-
-🔥 Firebase Configuration
-
-Create:
-
-client/lib/firebase.js
-
-Add your Firebase credentials.
-
-
----
-
-🚀 Deployment
-
-Frontend Deployment
-
-Deploy using:
-
-Vercel
-
-
-Backend Deployment
-
-Deploy using:
-
-Render
-
-
-
----
-
-📸 Screenshots
-
-🏠 Home Page
-
-Add screenshot here
-
-
----
-
-📊 Dashboard
-
-Add screenshot here
-
-
----
-
-📄 Resume Analyzer
-
-Add screenshot here
-
-
----
-
-🔐 Security
-
-Updated to secure Next.js versions
-
-Firebase Authentication
-
-Protected environment variables
-
-PDF-only uploads
-
-Secure Gemini AI integration
-
-Vulnerability checks completed
-
-
-
----
-
-🎯 Future Enhancements
-
-AI Cover Letter Generator
-
-Resume PDF Export
-
-LinkedIn Profile Analyzer
-
-AI Interview Question Generator
-
-Resume Templates Marketplace
-
-User History Dashboard
-
-Subscription Plans
-
-Multi-language Support
-
-
-
----
-
-👨‍💻 Author
-
-Akshith Reddy
-
-AI/ML Engineer & Full Stack Developer
-
-Passionate about AI-powered SaaS applications
-
-Interested in Machine Learning, Full Stack Development, and Product Engineering
-
-
-GitHub:
-
-https://github.com/Akshithreddy8025
-
-
----
-
-⭐ Support
-
-If you like this project:
-
-⭐ Star the repository 🍴 Fork the project 🚀 Share with others
-
-
----
-
-📜 License
-
-<<<<<<< HEAD
-This project is developed for educational and portfolio purposes.
-=======
-This project is developed for educational and portfolio purposes.
->>>>>>> 03627c8 (Fix resume template A4 PDF layout and optimized resume preview)
+├── README.md
+└── .gitignore
