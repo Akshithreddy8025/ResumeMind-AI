@@ -4,3 +4,4 @@ node_modules
 uploads
 dist
 buildclient/.env.local
+client/.env.local
