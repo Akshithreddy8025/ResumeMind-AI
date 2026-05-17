@@ -1,558 +1,852 @@
 export const companyRoles = [
   {
     company: 'Google',
-    type: 'Product-Based MNC',
+    type: 'Product MNC',
+    category: 'Search, Cloud, AI, Ads, Android',
+    location: 'Global / India',
     roles: [
       'Software Engineer',
+      'Software Development Engineer',
       'AI/ML Engineer',
       'Machine Learning Engineer',
       'Data Scientist',
       'Data Engineer',
       'Cloud Engineer',
       'Site Reliability Engineer',
-      'Security Engineer',
-      'Backend Engineer',
       'Frontend Engineer',
-      'Product Manager'
+      'Backend Engineer',
+      'Android Developer',
+      'Product Manager',
+      'Security Engineer'
     ]
   },
   {
     company: 'Microsoft',
-    type: 'Product-Based MNC',
+    type: 'Product MNC',
+    category: 'Cloud, AI, Productivity, Developer Tools',
+    location: 'Global / India',
     roles: [
       'Software Engineer',
+      'Software Development Engineer',
       'AI Engineer',
       'Machine Learning Engineer',
       'Cloud Engineer',
       'Azure Developer',
-      'Data Engineer',
       'Data Scientist',
-      'Cybersecurity Engineer',
+      'Data Engineer',
       'DevOps Engineer',
+      'Security Engineer',
+      'Frontend Engineer',
+      'Backend Engineer',
       'Product Manager'
     ]
   },
   {
     company: 'Amazon',
-    type: 'Product-Based MNC',
+    type: 'Product MNC',
+    category: 'E-commerce, Cloud, Logistics, AI',
+    location: 'Global / India',
     roles: [
       'Software Development Engineer',
-      'Machine Learning Engineer',
-      'Data Engineer',
-      'Business Intelligence Engineer',
-      'Cloud Support Engineer',
-      'AWS Solutions Architect',
       'Backend Engineer',
+      'Frontend Engineer',
+      'Data Engineer',
+      'Data Scientist',
+      'Machine Learning Engineer',
+      'Cloud Engineer',
+      'AWS Solutions Architect',
       'DevOps Engineer',
+      'Business Analyst',
+      'Product Manager'
+    ]
+  },
+  {
+    company: 'Apple',
+    type: 'Product MNC',
+    category: 'Consumer Electronics, iOS, AI, Hardware',
+    location: 'Global / India',
+    roles: [
+      'Software Engineer',
+      'iOS Developer',
+      'Machine Learning Engineer',
+      'Computer Vision Engineer',
+      'Embedded Software Engineer',
+      'Hardware Software Engineer',
+      'Backend Engineer',
+      'Data Scientist',
+      'Security Engineer',
       'Product Manager'
     ]
   },
   {
     company: 'Meta',
-    type: 'Product-Based MNC',
+    type: 'Product MNC',
+    category: 'Social Media, AI, AR/VR, Ads',
+    location: 'Global',
     roles: [
       'Software Engineer',
+      'Frontend Engineer',
+      'Backend Engineer',
       'Machine Learning Engineer',
       'AI Research Engineer',
       'Data Scientist',
       'Data Engineer',
-      'Product Engineer',
-      'Backend Engineer',
-      'Frontend Engineer',
-      'Security Engineer'
-    ]
-  },
-  {
-    company: 'Apple',
-    type: 'Product-Based MNC',
-    roles: [
-      'Software Engineer',
-      'Machine Learning Engineer',
-      'iOS Developer',
-      'Computer Vision Engineer',
-      'Embedded Software Engineer',
-      'Data Scientist',
+      'Product Analyst',
       'Security Engineer',
-      'Hardware Software Engineer'
+      'Product Manager'
     ]
   },
   {
     company: 'Netflix',
-    type: 'Product-Based MNC',
+    type: 'Product MNC',
+    category: 'Streaming, Recommendation Systems, Cloud',
+    location: 'Global',
     roles: [
       'Software Engineer',
-      'Data Engineer',
+      'Backend Engineer',
+      'Frontend Engineer',
       'Machine Learning Engineer',
       'Data Scientist',
-      'Backend Engineer',
-      'Platform Engineer',
-      'Recommendation Systems Engineer'
+      'Data Engineer',
+      'Cloud Engineer',
+      'DevOps Engineer',
+      'Product Manager'
     ]
   },
   {
     company: 'Adobe',
-    type: 'Product-Based MNC',
+    type: 'Product MNC',
+    category: 'Creative Cloud, SaaS, AI, Design Tools',
+    location: 'Global / India',
     roles: [
       'Software Engineer',
-      'Machine Learning Engineer',
-      'Computer Vision Engineer',
-      'Data Scientist',
       'Frontend Engineer',
       'Backend Engineer',
-      'Product Engineer'
+      'Full Stack Developer',
+      'AI/ML Engineer',
+      'Computer Vision Engineer',
+      'Data Scientist',
+      'Cloud Engineer',
+      'Product Manager'
     ]
   },
   {
     company: 'Salesforce',
-    type: 'Product-Based MNC',
+    type: 'SaaS Product',
+    category: 'CRM, Cloud, SaaS, Enterprise Software',
+    location: 'Global / India',
     roles: [
       'Software Engineer',
-      'AI Engineer',
-      'Data Engineer',
-      'Cloud Engineer',
       'Salesforce Developer',
       'Backend Engineer',
-      'DevOps Engineer'
+      'Frontend Engineer',
+      'Cloud Engineer',
+      'Data Engineer',
+      'DevOps Engineer',
+      'Product Manager',
+      'Business Analyst'
     ]
   },
   {
     company: 'Oracle',
-    type: 'Product-Based MNC',
+    type: 'Product MNC',
+    category: 'Database, Cloud, Enterprise Software',
+    location: 'Global / India',
     roles: [
       'Software Engineer',
+      'Java Developer',
       'Database Administrator',
       'Cloud Engineer',
-      'Java Developer',
+      'Backend Engineer',
       'Data Engineer',
-      'Backend Developer',
-      'DevOps Engineer'
+      'DevOps Engineer',
+      'Security Engineer',
+      'Business Analyst'
     ]
   },
   {
     company: 'IBM',
-    type: 'Product-Based / Consulting MNC',
+    type: 'Product + Service MNC',
+    category: 'Cloud, AI, Consulting, Enterprise Solutions',
+    location: 'Global / India',
     roles: [
-      'Associate System Engineer',
       'Software Developer',
       'AI Engineer',
       'Data Scientist',
       'Cloud Engineer',
-      'Cybersecurity Analyst',
+      'DevOps Engineer',
+      'Backend Engineer',
+      'Cyber Security Analyst',
       'Business Analyst',
-      'DevOps Engineer'
+      'Consultant'
     ]
   },
 
   {
     company: 'OpenAI',
-    type: 'AI Research Lab',
+    type: 'AI Lab',
+    category: 'Artificial Intelligence, LLMs, Research',
+    location: 'Global',
     roles: [
-      'AI Engineer',
+      'AI Research Engineer',
       'Machine Learning Engineer',
-      'Research Engineer',
       'LLM Engineer',
       'Applied AI Engineer',
       'Prompt Engineer',
       'Data Engineer',
-      'Safety Engineer'
+      'Backend Engineer',
+      'Security Engineer',
+      'Product Manager'
+    ]
+  },
+  {
+    company: 'Anthropic',
+    type: 'AI Lab',
+    category: 'AI Safety, LLMs, Research',
+    location: 'Global',
+    roles: [
+      'AI Research Engineer',
+      'Machine Learning Engineer',
+      'LLM Engineer',
+      'Applied AI Engineer',
+      'Prompt Engineer',
+      'Data Engineer',
+      'Backend Engineer',
+      'Product Manager'
     ]
   },
   {
     company: 'NVIDIA',
-    type: 'AI / Semiconductor MNC',
+    type: 'AI Hardware Product',
+    category: 'GPU, AI Computing, Deep Learning, CUDA',
+    location: 'Global / India',
     roles: [
-      'AI/ML Engineer',
+      'Software Engineer',
+      'CUDA Developer',
+      'GPU Computing Engineer',
+      'Machine Learning Engineer',
       'Deep Learning Engineer',
       'Computer Vision Engineer',
-      'CUDA Developer',
-      'GPU Software Engineer',
-      'Data Scientist',
       'Embedded Software Engineer',
-      'Systems Software Engineer'
+      'Data Scientist',
+      'Cloud Engineer'
     ]
   },
   {
     company: 'Tesla',
-    type: 'Automotive / AI Product Company',
+    type: 'AI + Automotive Product',
+    category: 'Autonomous Driving, Robotics, EV, AI',
+    location: 'Global',
     roles: [
       'Software Engineer',
+      'Autonomous Systems Engineer',
       'Machine Learning Engineer',
-      'Autonomous Driving Engineer',
       'Computer Vision Engineer',
       'Robotics Engineer',
+      'Embedded Software Engineer',
       'Data Engineer',
-      'Embedded Software Engineer'
+      'Backend Engineer'
+    ]
+  },
+  {
+    company: 'DeepMind',
+    type: 'AI Lab',
+    category: 'AI Research, Reinforcement Learning, Deep Learning',
+    location: 'Global',
+    roles: [
+      'AI Research Engineer',
+      'Research Scientist',
+      'Machine Learning Engineer',
+      'Deep Learning Engineer',
+      'Data Engineer',
+      'Software Engineer',
+      'Product Manager'
     ]
   },
 
   {
     company: 'TCS',
-    type: 'Service-Based MNC',
+    type: 'Service MNC',
+    category: 'IT Services, Consulting, Enterprise Solutions',
+    location: 'India / Global',
     roles: [
-      'Assistant System Engineer',
-      'System Engineer',
       'Software Developer',
       'Java Developer',
       'Python Developer',
+      'Frontend Developer',
+      'Backend Developer',
+      'Full Stack Developer',
       'Data Analyst',
+      'Data Engineer',
       'Cloud Engineer',
+      'DevOps Engineer',
       'Automation Tester',
-      'Support Engineer',
-      'Business Analyst'
+      'Business Analyst',
+      'SAP Consultant'
     ]
   },
   {
     company: 'Infosys',
-    type: 'Service-Based MNC',
+    type: 'Service MNC',
+    category: 'IT Services, Consulting, Digital Transformation',
+    location: 'India / Global',
     roles: [
-      'Systems Engineer',
-      'Specialist Programmer',
-      'Digital Specialist Engineer',
-      'Software Developer',
+      'Software Engineer',
       'Java Developer',
       'Python Developer',
+      'Frontend Developer',
+      'Backend Developer',
+      'Full Stack Developer',
       'Data Analyst',
       'Cloud Engineer',
-      'Testing Engineer',
-      'Business Analyst'
+      'DevOps Engineer',
+      'Automation Tester',
+      'Business Analyst',
+      'Consultant'
     ]
   },
   {
     company: 'Wipro',
-    type: 'Service-Based MNC',
+    type: 'Service MNC',
+    category: 'IT Services, Cloud, Cybersecurity, Consulting',
+    location: 'India / Global',
     roles: [
-      'Project Engineer',
       'Software Developer',
       'Java Developer',
-      'Data Analyst',
+      'Python Developer',
       'Cloud Engineer',
-      'Automation Engineer',
+      'DevOps Engineer',
+      'Cyber Security Analyst',
+      'Data Analyst',
       'Testing Engineer',
-      'Support Engineer',
-      'Business Analyst'
+      'Business Analyst',
+      'Consultant'
     ]
   },
   {
     company: 'Accenture',
-    type: 'Service / Consulting MNC',
+    type: 'Consulting MNC',
+    category: 'Consulting, Cloud, Data, Digital Engineering',
+    location: 'India / Global',
     roles: [
-      'Application Development Associate',
       'Software Engineer',
-      'Data Analyst',
-      'AI Associate',
+      'Application Developer',
       'Cloud Engineer',
+      'Data Analyst',
+      'Data Engineer',
+      'AI Engineer',
+      'DevOps Engineer',
+      'Security Analyst',
       'Business Analyst',
-      'SAP Consultant',
-      'Testing Engineer',
-      'DevOps Engineer'
+      'Technology Consultant'
     ]
   },
   {
     company: 'Cognizant',
-    type: 'Service-Based MNC',
+    type: 'Service MNC',
+    category: 'IT Services, Healthcare Tech, Consulting',
+    location: 'India / Global',
     roles: [
-      'Programmer Analyst Trainee',
+      'Programmer Analyst',
       'Software Developer',
       'Java Developer',
+      'Python Developer',
+      'Frontend Developer',
+      'Backend Developer',
       'Data Analyst',
       'Cloud Engineer',
-      'Testing Engineer',
-      'Support Engineer',
+      'Automation Tester',
       'Business Analyst'
     ]
   },
   {
     company: 'Capgemini',
-    type: 'Service / Consulting MNC',
+    type: 'Consulting MNC',
+    category: 'Consulting, IT Services, Cloud, Engineering',
+    location: 'India / Global',
     roles: [
-      'Analyst',
       'Software Engineer',
       'Java Developer',
-      'Data Analyst',
+      'Full Stack Developer',
       'Cloud Engineer',
-      'SAP Consultant',
+      'DevOps Engineer',
+      'Data Engineer',
+      'Data Analyst',
       'Testing Engineer',
-      'Business Analyst'
+      'Business Analyst',
+      'Consultant'
     ]
   },
   {
     company: 'HCLTech',
-    type: 'Service-Based MNC',
+    type: 'Service MNC',
+    category: 'IT Services, Engineering, Cloud, Cybersecurity',
+    location: 'India / Global',
     roles: [
-      'Graduate Engineer Trainee',
-      'Software Developer',
+      'Software Engineer',
       'Java Developer',
+      'Python Developer',
       'Cloud Engineer',
-      'Data Analyst',
+      'DevOps Engineer',
+      'Network Engineer',
+      'Cyber Security Analyst',
       'Testing Engineer',
       'Support Engineer',
-      'Network Engineer'
+      'Business Analyst'
     ]
   },
   {
     company: 'Tech Mahindra',
-    type: 'Service-Based MNC',
+    type: 'Service MNC',
+    category: 'Telecom, IT Services, Cloud, Consulting',
+    location: 'India / Global',
     roles: [
-      'Associate Software Engineer',
       'Software Developer',
       'Java Developer',
-      'Data Analyst',
+      'Frontend Developer',
+      'Backend Developer',
       'Cloud Engineer',
+      'Network Engineer',
+      'DevOps Engineer',
       'Testing Engineer',
-      'Support Engineer',
       'Business Analyst'
     ]
   },
 
   {
-    company: 'Deloitte',
-    type: 'Consulting MNC',
+    company: 'Flipkart',
+    type: 'Indian Product',
+    category: 'E-commerce, Logistics, Payments, Data',
+    location: 'India',
     roles: [
-      'Analyst',
-      'Business Technology Analyst',
+      'Software Development Engineer',
+      'Backend Engineer',
+      'Frontend Engineer',
+      'Full Stack Developer',
+      'Data Scientist',
+      'Data Engineer',
+      'Machine Learning Engineer',
+      'Product Analyst',
+      'Product Manager',
+      'DevOps Engineer'
+    ]
+  },
+  {
+    company: 'Zomato',
+    type: 'Indian Product',
+    category: 'FoodTech, Delivery, Data, Consumer Tech',
+    location: 'India',
+    roles: [
+      'Software Engineer',
+      'Backend Engineer',
+      'Frontend Engineer',
+      'Android Developer',
+      'iOS Developer',
       'Data Analyst',
       'Data Scientist',
-      'Cybersecurity Analyst',
-      'Cloud Consultant',
-      'SAP Consultant',
-      'Business Analyst'
+      'Machine Learning Engineer',
+      'Product Analyst',
+      'Product Manager'
     ]
   },
   {
-    company: 'PwC',
-    type: 'Consulting MNC',
+    company: 'Swiggy',
+    type: 'Indian Product',
+    category: 'FoodTech, Delivery, Logistics, Data',
+    location: 'India',
     roles: [
-      'Technology Consultant',
+      'Software Development Engineer',
+      'Backend Engineer',
+      'Frontend Engineer',
+      'Android Developer',
       'Data Analyst',
-      'Business Analyst',
-      'Cybersecurity Analyst',
-      'Cloud Consultant',
-      'Risk Analyst',
-      'AI Consultant'
+      'Data Scientist',
+      'Data Engineer',
+      'Machine Learning Engineer',
+      'Product Manager'
     ]
   },
   {
-    company: 'EY',
-    type: 'Consulting MNC',
+    company: 'Paytm',
+    type: 'FinTech Product',
+    category: 'Payments, FinTech, Banking, Commerce',
+    location: 'India',
     roles: [
-      'Technology Consultant',
+      'Software Engineer',
+      'Backend Engineer',
+      'Frontend Engineer',
+      'Android Developer',
       'Data Analyst',
-      'Business Analyst',
-      'Cybersecurity Consultant',
-      'Cloud Consultant',
+      'Data Engineer',
       'Risk Analyst',
-      'AI Consultant'
+      'Security Engineer',
+      'Product Manager'
     ]
   },
   {
-    company: 'KPMG',
-    type: 'Consulting MNC',
+    company: 'PhonePe',
+    type: 'FinTech Product',
+    category: 'Payments, UPI, FinTech, Data',
+    location: 'India',
     roles: [
-      'Technology Analyst',
-      'Data Analyst',
-      'Business Analyst',
-      'Cybersecurity Analyst',
-      'Cloud Consultant',
+      'Software Engineer',
+      'Backend Engineer',
+      'Frontend Engineer',
+      'Android Developer',
+      'Data Engineer',
+      'Data Scientist',
       'Risk Analyst',
-      'AI Consultant'
+      'Security Engineer',
+      'Product Manager'
+    ]
+  },
+  {
+    company: 'Razorpay',
+    type: 'FinTech Product',
+    category: 'Payments, APIs, FinTech, SaaS',
+    location: 'India',
+    roles: [
+      'Software Engineer',
+      'Backend Engineer',
+      'Frontend Engineer',
+      'Full Stack Developer',
+      'Data Analyst',
+      'Data Engineer',
+      'Security Engineer',
+      'Product Manager',
+      'DevOps Engineer'
+    ]
+  },
+  {
+    company: 'CRED',
+    type: 'FinTech Product',
+    category: 'Consumer FinTech, Credit, Rewards, Data',
+    location: 'India',
+    roles: [
+      'Software Engineer',
+      'Backend Engineer',
+      'Frontend Engineer',
+      'Android Developer',
+      'iOS Developer',
+      'Data Analyst',
+      'Data Scientist',
+      'Product Analyst',
+      'Product Manager'
+    ]
+  },
+  {
+    company: 'Meesho',
+    type: 'Indian Product',
+    category: 'E-commerce, Social Commerce, Data',
+    location: 'India',
+    roles: [
+      'Software Development Engineer',
+      'Backend Engineer',
+      'Frontend Engineer',
+      'Data Analyst',
+      'Data Scientist',
+      'Machine Learning Engineer',
+      'Product Analyst',
+      'Product Manager',
+      'DevOps Engineer'
+    ]
+  },
+  {
+    company: 'Ola',
+    type: 'Indian Product',
+    category: 'Mobility, EV, Maps, Consumer Tech',
+    location: 'India',
+    roles: [
+      'Software Engineer',
+      'Backend Engineer',
+      'Android Developer',
+      'iOS Developer',
+      'Data Analyst',
+      'Data Scientist',
+      'Machine Learning Engineer',
+      'Embedded Software Engineer',
+      'Product Manager'
+    ]
+  },
+
+  {
+    company: 'Zoho',
+    type: 'SaaS Product',
+    category: 'SaaS, CRM, Productivity, Enterprise Tools',
+    location: 'India / Global',
+    roles: [
+      'Software Developer',
+      'Java Developer',
+      'Frontend Developer',
+      'Backend Developer',
+      'Full Stack Developer',
+      'Cloud Engineer',
+      'Data Analyst',
+      'Product Developer',
+      'Testing Engineer',
+      'Product Manager'
+    ]
+  },
+  {
+    company: 'Freshworks',
+    type: 'SaaS Product',
+    category: 'SaaS, CRM, Customer Support, Enterprise Software',
+    location: 'India / Global',
+    roles: [
+      'Software Engineer',
+      'Frontend Engineer',
+      'Backend Engineer',
+      'Full Stack Developer',
+      'Data Analyst',
+      'Product Analyst',
+      'DevOps Engineer',
+      'Product Manager',
+      'Security Engineer'
+    ]
+  },
+  {
+    company: 'Atlassian',
+    type: 'SaaS Product',
+    category: 'Developer Tools, Collaboration, SaaS',
+    location: 'Global / India',
+    roles: [
+      'Software Engineer',
+      'Frontend Engineer',
+      'Backend Engineer',
+      'Full Stack Developer',
+      'Cloud Engineer',
+      'DevOps Engineer',
+      'Data Engineer',
+      'Security Engineer',
+      'Product Manager'
+    ]
+  },
+  {
+    company: 'ServiceNow',
+    type: 'SaaS Product',
+    category: 'Workflow Automation, Enterprise SaaS, Cloud',
+    location: 'Global / India',
+    roles: [
+      'Software Engineer',
+      'Frontend Engineer',
+      'Backend Engineer',
+      'Full Stack Developer',
+      'Cloud Engineer',
+      'Platform Engineer',
+      'Data Engineer',
+      'Product Manager'
+    ]
+  },
+  {
+    company: 'Shopify',
+    type: 'SaaS Product',
+    category: 'E-commerce SaaS, Payments, Developer Platform',
+    location: 'Global',
+    roles: [
+      'Software Engineer',
+      'Backend Engineer',
+      'Frontend Engineer',
+      'Full Stack Developer',
+      'Data Scientist',
+      'Data Engineer',
+      'Product Manager',
+      'Security Engineer'
     ]
   },
 
   {
     company: 'JPMorgan Chase',
     type: 'FinTech / Banking MNC',
+    category: 'Banking, Finance, Risk, Trading Systems',
+    location: 'Global / India',
     roles: [
       'Software Engineer',
-      'Data Engineer',
-      'Data Scientist',
-      'Quantitative Analyst',
-      'Cybersecurity Analyst',
-      'Cloud Engineer',
+      'Java Developer',
       'Backend Engineer',
+      'Data Engineer',
+      'Data Analyst',
+      'Quantitative Analyst',
+      'Risk Analyst',
+      'Cyber Security Analyst',
+      'Cloud Engineer',
       'Business Analyst'
     ]
   },
   {
     company: 'Goldman Sachs',
     type: 'FinTech / Banking MNC',
+    category: 'Investment Banking, Trading, Risk, Data',
+    location: 'Global / India',
     roles: [
       'Software Engineer',
+      'Java Developer',
+      'Python Developer',
+      'Data Engineer',
       'Data Analyst',
-      'Data Scientist',
       'Quantitative Analyst',
       'Risk Analyst',
-      'Backend Engineer',
-      'Cybersecurity Analyst'
+      'Security Engineer',
+      'Business Analyst'
     ]
   },
   {
     company: 'Morgan Stanley',
     type: 'FinTech / Banking MNC',
+    category: 'Investment Banking, Wealth Management, Data',
+    location: 'Global / India',
     roles: [
-      'Technology Analyst',
       'Software Engineer',
-      'Data Analyst',
+      'Java Developer',
+      'Backend Engineer',
       'Data Engineer',
-      'Cybersecurity Analyst',
+      'Data Analyst',
+      'Risk Analyst',
       'Cloud Engineer',
+      'Security Engineer',
       'Business Analyst'
     ]
   },
   {
     company: 'Visa',
-    type: 'FinTech MNC',
-    roles: [
-      'Software Engineer',
-      'Data Scientist',
-      'Data Engineer',
-      'Cybersecurity Engineer',
-      'Backend Engineer',
-      'Cloud Engineer',
-      'Product Analyst'
-    ]
-  },
-  {
-    company: 'PayPal',
-    type: 'FinTech Product Company',
+    type: 'FinTech Product',
+    category: 'Payments, Security, APIs, Data',
+    location: 'Global / India',
     roles: [
       'Software Engineer',
       'Backend Engineer',
-      'Data Scientist',
       'Data Engineer',
-      'Machine Learning Engineer',
+      'Data Scientist',
+      'Security Engineer',
       'Risk Analyst',
-      'Security Engineer'
-    ]
-  },
-
-  {
-    company: 'Flipkart',
-    type: 'E-Commerce Product Company',
-    roles: [
-      'Software Development Engineer',
-      'Backend Engineer',
-      'Frontend Engineer',
-      'Data Scientist',
-      'Data Analyst',
-      'Data Engineer',
-      'Product Analyst',
-      'Business Analyst'
-    ]
-  },
-  {
-    company: 'Swiggy',
-    type: 'FoodTech / Product Company',
-    roles: [
-      'Software Development Engineer',
-      'Backend Engineer',
-      'Frontend Engineer',
-      'Data Scientist',
-      'Data Analyst',
-      'Product Analyst',
-      'Business Analyst',
-      'DevOps Engineer'
-    ]
-  },
-  {
-    company: 'Zomato',
-    type: 'FoodTech / Product Company',
-    roles: [
-      'Software Development Engineer',
-      'Backend Engineer',
-      'Frontend Engineer',
-      'Data Analyst',
-      'Data Scientist',
-      'Product Analyst',
-      'Business Analyst'
-    ]
-  },
-  {
-    company: 'Meesho',
-    type: 'E-Commerce Product Company',
-    roles: [
-      'Software Development Engineer',
-      'Backend Engineer',
-      'Frontend Engineer',
-      'Data Analyst',
-      'Data Scientist',
-      'Product Analyst',
-      'Business Analyst'
-    ]
-  },
-
-  {
-    company: 'Zoho',
-    type: 'SaaS Product Company',
-    roles: [
-      'Software Developer',
-      'Product Developer',
-      'Backend Developer',
-      'Frontend Developer',
-      'Full Stack Developer',
-      'QA Engineer',
-      'Data Analyst',
-      'Technical Support Engineer'
-    ]
-  },
-  {
-    company: 'Freshworks',
-    type: 'SaaS Product Company',
-    roles: [
-      'Software Engineer',
-      'Product Engineer',
-      'Frontend Developer',
-      'Backend Developer',
-      'Full Stack Developer',
-      'Data Analyst',
-      'QA Engineer'
-    ]
-  },
-  {
-    company: 'ServiceNow',
-    type: 'SaaS Product Company',
-    roles: [
-      'Software Engineer',
-      'Platform Engineer',
-      'Backend Engineer',
-      'Frontend Engineer',
-      'Cloud Engineer',
-      'Data Engineer',
-      'DevOps Engineer'
-    ]
-  },
-  {
-    company: 'Atlassian',
-    type: 'SaaS Product Company',
-    roles: [
-      'Software Engineer',
-      'Backend Engineer',
-      'Frontend Engineer',
-      'Data Engineer',
-      'Machine Learning Engineer',
       'Cloud Engineer',
       'Product Manager'
     ]
   },
   {
-  company: 'Other',
-  type: 'Custom',
-  roles: [
-    'AI/ML Engineer',
-    'Machine Learning Engineer',
-    'Data Scientist',
-    'Data Analyst',
-    'Software Engineer',
-    'Frontend Developer',
-    'Backend Developer',
-    'Full Stack Developer',
-    'Cloud Engineer',
-    'DevOps Engineer',
-    'Cybersecurity Analyst',
-    'Business Analyst',
-    'QA Engineer',
-    'Testing Engineer',
-    'Product Manager'
-  ]
-}
-]
+    company: 'PayPal',
+    type: 'FinTech Product',
+    category: 'Payments, APIs, FinTech, Security',
+    location: 'Global / India',
+    roles: [
+      'Software Engineer',
+      'Backend Engineer',
+      'Frontend Engineer',
+      'Data Engineer',
+      'Data Scientist',
+      'Security Engineer',
+      'Risk Analyst',
+      'Product Manager'
+    ]
+  },
 
+  {
+    company: 'Cisco',
+    type: 'Networking Product',
+    category: 'Networking, Security, Cloud, Infrastructure',
+    location: 'Global / India',
+    roles: [
+      'Software Engineer',
+      'Network Engineer',
+      'Cloud Engineer',
+      'Security Engineer',
+      'DevOps Engineer',
+      'Embedded Software Engineer',
+      'Data Engineer',
+      'Product Manager'
+    ]
+  },
+  {
+    company: 'Palo Alto Networks',
+    type: 'Cybersecurity Product',
+    category: 'Cybersecurity, Cloud Security, Network Security',
+    location: 'Global / India',
+    roles: [
+      'Security Engineer',
+      'Cyber Security Analyst',
+      'Cloud Security Engineer',
+      'Software Engineer',
+      'Backend Engineer',
+      'Data Engineer',
+      'DevOps Engineer',
+      'Product Manager'
+    ]
+  },
+  {
+    company: 'CrowdStrike',
+    type: 'Cybersecurity Product',
+    category: 'Endpoint Security, Cloud Security, Threat Intelligence',
+    location: 'Global / India',
+    roles: [
+      'Security Engineer',
+      'Cyber Security Analyst',
+      'Software Engineer',
+      'Backend Engineer',
+      'Cloud Engineer',
+      'Data Engineer',
+      'Threat Intelligence Analyst',
+      'Product Manager'
+    ]
+  },
+
+  {
+    company: 'Deloitte',
+    type: 'Consulting MNC',
+    category: 'Consulting, Audit, Technology, Risk Advisory',
+    location: 'Global / India',
+    roles: [
+      'Technology Consultant',
+      'Business Analyst',
+      'Data Analyst',
+      'Cloud Consultant',
+      'Cyber Security Analyst',
+      'Risk Analyst',
+      'Software Engineer',
+      'SAP Consultant'
+    ]
+  },
+  {
+    company: 'PwC',
+    type: 'Consulting MNC',
+    category: 'Consulting, Risk, Technology, Audit',
+    location: 'Global / India',
+    roles: [
+      'Technology Consultant',
+      'Business Analyst',
+      'Data Analyst',
+      'Risk Analyst',
+      'Cyber Security Analyst',
+      'Cloud Consultant',
+      'SAP Consultant'
+    ]
+  },
+  {
+    company: 'EY',
+    type: 'Consulting MNC',
+    category: 'Consulting, Technology, Risk, Data',
+    location: 'Global / India',
+    roles: [
+      'Technology Consultant',
+      'Business Analyst',
+      'Data Analyst',
+      'Risk Analyst',
+      'Cyber Security Analyst',
+      'Cloud Consultant',
+      'Software Engineer'
+    ]
+  },
+  {
+    company: 'KPMG',
+    type: 'Consulting MNC',
+    category: 'Consulting, Risk, Technology, Data',
+    location: 'Global / India',
+    roles: [
+      'Technology Consultant',
+      'Business Analyst',
+      'Data Analyst',
+      'Risk Analyst',
+      'Cyber Security Analyst',
+      'Cloud Consultant',
+      'SAP Consultant'
+    ]
+  }
+]

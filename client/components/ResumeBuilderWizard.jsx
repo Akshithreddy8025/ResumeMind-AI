@@ -65,6 +65,51 @@ const ResumeBuilderWizard = ({
     'Template'
   ]
 
+  const getSelectedTemplateName = () => {
+    return typeof formData.template === 'string'
+      ? formData.template
+      : formData.template?.name || 'ATS Classic'
+  }
+
+  const saveCreatedResume = (resumeData) => {
+    const oldResumes = JSON.parse(
+      localStorage.getItem('resumemind_created_resumes') || '[]'
+    )
+
+    const resumeTitle =
+      resumeData?.name ||
+      resumeData?.title ||
+      `${targetRole || 'Improved'} Resume`
+
+    const newResume = {
+      id: `resume_${Date.now()}`,
+      title: resumeTitle,
+      targetRole: targetRole || 'Target Role',
+      targetCompany: targetCompany || 'Target Company',
+      template: getSelectedTemplateName(),
+      createdAt: new Date().toISOString(),
+      data: resumeData,
+      analysisSummary: {
+        atsScore: analysis?.atsScore || 0,
+        companyMatch: analysis?.companyMatch || 0,
+        projectStrength: analysis?.projectStrength || 0,
+        hiringProbability: analysis?.hiringProbability || 'Low'
+      }
+    }
+
+    const updatedResumes = [
+      newResume,
+      ...oldResumes
+    ].slice(0, 20)
+
+    localStorage.setItem(
+      'resumemind_created_resumes',
+      JSON.stringify(updatedResumes)
+    )
+
+    return newResume
+  }
+
   const toggleSkill = (skill) => {
     setFormData((prev) => {
       const exists = prev.selectedSkills.includes(skill)
@@ -172,7 +217,13 @@ const ResumeBuilderWizard = ({
         throw new Error(result.message || 'Failed to generate optimized resume')
       }
 
-      setOptimizedResume(result.data)
+      const savedResume = saveCreatedResume(result.data)
+
+      setOptimizedResume({
+        ...result.data,
+        savedResumeId: savedResume.id
+      })
+
       setStep(6)
     } catch (error) {
       console.error('Generate optimized resume error:', error)
@@ -186,11 +237,7 @@ const ResumeBuilderWizard = ({
     return (
       <OptimizedResumePreview
         resume={optimizedResume}
-        selectedTemplate={
-  typeof formData.template === 'string'
-    ? formData.template
-    : formData.template?.name || 'ATS Classic'
-}
+        selectedTemplate={getSelectedTemplateName()}
         onBack={() => setStep(5)}
       />
     )

@@ -1,16 +1,16 @@
-import AuthProvider from '../components/AuthProvider'
 import './globals.css'
+import ProfileMenu from '../components/ProfileMenu'
 
 export const metadata = {
   title: 'ResumeMind AI',
-  description: 'Premium AI Resume Platform'
+  description: 'AI-powered resume analyzer platform'
 }
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
+    <html lang="en">
       <body>
-        <AuthProvider />
+        <ProfileMenu />
         {children}
       </body>
     </html>

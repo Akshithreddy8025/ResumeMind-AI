@@ -1,176 +1,330 @@
 'use client'
 
 import { useState } from 'react'
-
 import Link from 'next/link'
-
 import { useRouter } from 'next/navigation'
 
 import Navbar from '../../components/Navbar'
 
 import {
-
-auth,
-
-createUserWithEmailAndPassword
-
+  auth,
+  googleProvider,
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  updateProfile
 } from '../../lib/firebase'
 
-export default function Signup(){
+export default function SignupPage() {
+  const router = useRouter()
 
-const router = useRouter()
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  })
 
-const [form,setForm] =
-useState({
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-name:'',
-email:'',
-college:'',
-password:''
+  const handleChange = (event) => {
+    const { name, value } = event.target
 
-})
+    setFormData((previous) => ({
+      ...previous,
+      [name]: value
+    }))
+  }
 
-const [loading,setLoading] =
-useState(false)
+  const saveSession = (firebaseUser, provider = 'email') => {
+    const sessionUser = {
+      uid: firebaseUser.uid,
+      email: firebaseUser.email,
+      name:
+        firebaseUser.displayName ||
+        formData.name ||
+        firebaseUser.email?.split('@')[0] ||
+        'User',
+      photoURL: firebaseUser.photoURL || '',
+      provider,
+      loggedInAt: new Date().toISOString()
+    }
 
-const handleSignup = async()=>{
+    localStorage.setItem(
+      'resumemind_session',
+      JSON.stringify(sessionUser)
+    )
 
-try{
+    localStorage.setItem(
+      'resumemind_user_profile',
+      JSON.stringify(sessionUser)
+    )
 
-setLoading(true)
+    localStorage.setItem(
+      'resumemind_user',
+      JSON.stringify(sessionUser)
+    )
+  }
 
-await createUserWithEmailAndPassword(
+  const getFirebaseErrorMessage = (code) => {
+    if (code === 'auth/email-already-in-use') {
+      return 'This email is already registered. Please login instead.'
+    }
 
-auth,
-form.email,
-form.password
+    if (code === 'auth/invalid-email') {
+      return 'Please enter a valid email address.'
+    }
 
-)
+    if (code === 'auth/weak-password') {
+      return 'Password should be at least 6 characters.'
+    }
 
-alert('Account Created Successfully')
+    if (code === 'auth/popup-closed-by-user') {
+      return 'Google signup was cancelled. Please try again.'
+    }
 
-router.push('/login')
+    if (code === 'auth/cancelled-popup-request') {
+      return 'Another Google popup was already opened. Please try again.'
+    }
 
-}catch(error){
+    if (code === 'auth/popup-blocked') {
+      return 'Popup was blocked. Please allow popups and try again.'
+    }
 
-alert(error.message)
+    if (code === 'auth/network-request-failed') {
+      return 'Network error. Please check your internet and try again.'
+    }
 
-}
+    return 'Signup failed. Please try again.'
+  }
 
-setLoading(false)
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    setError('')
 
-}
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match.')
+      return
+    }
 
-return(
+    if (formData.password.length < 6) {
+      setError('Password should be at least 6 characters.')
+      return
+    }
 
-<div className='page'>
+    setLoading(true)
 
-<div className='glow one'></div>
-<div className='glow two'></div>
+    try {
+      const response = await createUserWithEmailAndPassword(
+        auth,
+        formData.email.trim().toLowerCase(),
+        formData.password
+      )
 
-<div className='container'>
+      await updateProfile(response.user, {
+        displayName: formData.name.trim()
+      })
 
-<Navbar/>
+      const updatedUser = {
+        ...response.user,
+        displayName: formData.name.trim()
+      }
 
-<div className='auth-card card'>
+      saveSession(updatedUser, 'email')
+      router.push('/dashboard')
+    } catch (error) {
+      setError(getFirebaseErrorMessage(error.code))
+    } finally {
+      setLoading(false)
+    }
+  }
 
-<h1>
-Create Account
-</h1>
+  const handleGoogleSignup = async () => {
+    setError('')
+    setLoading(true)
 
-<p>
-Start your AI-powered career journey.
-</p>
+    try {
+      const response = await signInWithPopup(auth, googleProvider)
 
-<input
-placeholder='Full Name'
-onChange={(e)=>
-setForm({
-...form,
-name:e.target.value
-})
-}
-/>
+      saveSession(response.user, 'google')
+      router.push('/dashboard')
+    } catch (error) {
+      if (error.code === 'auth/popup-closed-by-user') {
+        setError('Google signup was cancelled. Please try again.')
+        return
+      }
 
-<input
-type='email'
-placeholder='Email'
-onChange={(e)=>
-setForm({
-...form,
-email:e.target.value
-})
-}
-/>
+      if (error.code === 'auth/cancelled-popup-request') {
+        setError('Another Google popup was already opened. Please try again.')
+        return
+      }
 
-<input
-placeholder='College'
-onChange={(e)=>
-setForm({
-...form,
-college:e.target.value
-})
-}
-/>
+      if (error.code === 'auth/popup-blocked') {
+        setError('Popup was blocked. Please allow popups and try again.')
+        return
+      }
 
-<input
-type='password'
-placeholder='Password'
-onChange={(e)=>
-setForm({
-...form,
-password:e.target.value
-})
-}
-/>
+      setError(getFirebaseErrorMessage(error.code))
+    } finally {
+      setLoading(false)
+    }
+  }
 
-<button
-className='button'
-onClick={handleSignup}
->
+  return (
+    <main className="page">
+      <div className="glow one"></div>
+      <div className="glow two"></div>
+      <div className="glow three"></div>
 
-{
-loading
-?
-'Creating Account...'
-:
-'Create Account'
-}
+      <div className="container">
+        <Navbar />
 
-</button>
+        <section className="auth-layout">
+          <div className="auth-copy">
+            <span className="eyebrow">
+              Start Your Journey
+            </span>
 
+            <h1>
+              Create your ResumeMind AI account
+            </h1>
 
-<div
-style={{
-marginTop:'20px',
-textAlign:'center',
-color:'#94a3b8'
-}}
->
+            <p>
+              Sign up to analyze resumes, track ATS scores, compare company
+              matches, save reports, and build improved resumes.
+            </p>
 
-Already have an account?
+            <div className="auth-feature-list">
+              <span>🚀 AI Resume Analyzer</span>
+              <span>🎯 ATS Score Tracking</span>
+              <span>🏢 Company Match Reports</span>
+              <span>📄 Resume Builder</span>
+            </div>
+          </div>
 
-<Link
-href='/login'
-style={{
-marginLeft:'8px',
-color:'#8b5cf6',
-fontWeight:'700'
-}}
->
+          <div className="auth-card">
+            <span className="auth-icon">
+              ✨
+            </span>
 
-Login
+            <h2>
+              Signup
+            </h2>
 
-</Link>
+            <p>
+              Create your account to access your AI resume dashboard.
+            </p>
 
-</div>
+            {
+              error ? (
+                <div className="auth-error">
+                  {error}
+                </div>
+              ) : null
+            }
 
-</div>
+            <button
+              type="button"
+              className="google-login-btn"
+              onClick={handleGoogleSignup}
+              disabled={loading}
+            >
+              <span className="google-icon">
+                G
+              </span>
 
-</div>
+              {loading ? 'Please wait...' : 'Continue with Google'}
+            </button>
 
-</div>
+            <div className="auth-divider">
+              <span></span>
 
-)
+              <p>
+                or signup with email
+              </p>
 
+              <span></span>
+            </div>
+
+            <form onSubmit={handleSubmit} className="auth-form">
+              <div className="form-group">
+                <label>
+                  Full Name
+                </label>
+
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Enter your full name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>
+                  Email
+                </label>
+
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>
+                  Password
+                </label>
+
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Create password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>
+                  Confirm Password
+                </label>
+
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Confirm password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="button auth-submit"
+                disabled={loading}
+              >
+                {loading ? 'Creating account...' : 'Create Account'}
+              </button>
+            </form>
+
+            <p className="auth-switch">
+              Already have an account?{' '}
+              <Link href="/login">
+                Login
+              </Link>
+            </p>
+          </div>
+        </section>
+      </div>
+    </main>
+  )
 }

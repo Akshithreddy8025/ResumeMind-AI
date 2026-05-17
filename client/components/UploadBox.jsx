@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import axios from 'axios'
 import { FiUploadCloud } from 'react-icons/fi'
@@ -16,17 +16,78 @@ export default function UploadBox({
   const [file, setFile] = useState(null)
   const [loading, setLoading] = useState(false)
   const [jobDescription, setJobDescription] = useState('')
-  const [company, setCompany] = useState(companyRoles[0].company)
-  const [role, setRole] = useState(companyRoles[0].roles[0])
+
+  const [company, setCompany] = useState(companyRoles[0]?.company || '')
+  const [role, setRole] = useState(companyRoles[0]?.roles?.[0] || '')
 
   const [openCompanyDropdown, setOpenCompanyDropdown] = useState(false)
   const [openRoleDropdown, setOpenRoleDropdown] = useState(false)
 
-  const selectedCompanyData = companyRoles.find(
-    (item) => item.company === company
-  )
+  const [companySearch, setCompanySearch] = useState('')
+  const [roleSearch, setRoleSearch] = useState('')
+
+  useEffect(() => {
+    const savedTarget = localStorage.getItem('resumemind_target_selection')
+
+    if (savedTarget) {
+      try {
+        const parsedTarget = JSON.parse(savedTarget)
+
+        const targetCompany = parsedTarget.company
+        const targetRole = parsedTarget.role
+
+        const selectedData = companyRoles.find(
+          (item) => item.company === targetCompany
+        )
+
+        if (selectedData) {
+          setCompany(selectedData.company)
+
+          if (selectedData.roles.includes(targetRole)) {
+            setRole(targetRole)
+          } else {
+            setRole(selectedData.roles[0] || '')
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load selected target:', error)
+      }
+    }
+  }, [])
+
+  const selectedCompanyData = useMemo(() => {
+    return companyRoles.find((item) => item.company === company)
+  }, [company])
 
   const availableRoles = selectedCompanyData?.roles || []
+
+  const filteredCompanies = useMemo(() => {
+    const query = companySearch.toLowerCase().trim()
+
+    if (!query) return companyRoles
+
+    return companyRoles.filter((item) => {
+      const searchableText = [
+        item.company,
+        item.type,
+        item.category,
+        item.location,
+        ...(item.roles || [])
+      ].join(' ').toLowerCase()
+
+      return searchableText.includes(query)
+    })
+  }, [companySearch])
+
+  const filteredRoles = useMemo(() => {
+    const query = roleSearch.toLowerCase().trim()
+
+    if (!query) return availableRoles
+
+    return availableRoles.filter((item) =>
+      item.toLowerCase().includes(query)
+    )
+  }, [roleSearch, availableRoles])
 
   const {
     getRootProps,
@@ -50,11 +111,14 @@ export default function UploadBox({
 
     setCompany(selectedCompany)
     setRole(selectedData?.roles?.[0] || '')
+    setCompanySearch('')
+    setRoleSearch('')
     setOpenCompanyDropdown(false)
   }
 
   const handleRoleChange = (selectedRole) => {
     setRole(selectedRole)
+    setRoleSearch('')
     setOpenRoleDropdown(false)
   }
 
@@ -66,6 +130,25 @@ export default function UploadBox({
 
     try {
       setLoading(true)
+
+      const currentMeta = {
+        company,
+        role,
+        jobDescription
+      }
+
+      if (setAnalysisMeta) {
+        setAnalysisMeta(currentMeta)
+      }
+
+      localStorage.setItem(
+        'resumemind_target_selection',
+        JSON.stringify({
+          company,
+          role,
+          selectedAt: new Date().toISOString()
+        })
+      )
 
       const formData = new FormData()
 
@@ -85,15 +168,23 @@ export default function UploadBox({
       )
 
       if (response.data?.success && response.data?.analysis) {
-        setResult(response.data.analysis)
-
-        if (setAnalysisMeta) {
-          setAnalysisMeta({
-            company,
-            role,
-            jobDescription
-          })
+        const analysisPayload = {
+          ...response.data.analysis,
+          selectedCompany: company,
+          selectedRole: role,
+          jobDescription
         }
+
+        setResult(analysisPayload)
+
+        localStorage.setItem(
+          'resumemind_latest_analysis',
+          JSON.stringify({
+            result: analysisPayload,
+            meta: currentMeta,
+            savedAt: new Date().toISOString()
+          })
+        )
       } else {
         alert('Analysis completed but no result was returned.')
       }
@@ -112,14 +203,15 @@ export default function UploadBox({
   return (
     <div className="upload-wrapper">
       <div className="upload-header">
-        <h1>
-          AI Resume Analyzer
-        </h1>
+        <div className="uploadbox-header">
+  <span className="eyebrow">
+    Upload & Analyze
+  </span>
 
-        <p>
-          Upload your resume and get ATS analysis, AI suggestions,
-          company matching, and role-based skill insights.
-        </p>
+  <p>
+    Add your resume details below to generate ATS, skill gap, and company-role insights.
+  </p>
+</div>
       </div>
 
       <div
@@ -154,7 +246,7 @@ export default function UploadBox({
             Target Company
           </label>
 
-          <div className="custom-dropdown">
+          <div className="custom-dropdown searchable-dropdown">
             <button
               type="button"
               className="dropdown-btn"
@@ -163,24 +255,48 @@ export default function UploadBox({
                 setOpenRoleDropdown(false)
               }}
             >
-              <span>{company}</span>
+              <span>{company || 'Select Company'}</span>
               <span>⌄</span>
             </button>
 
             {openCompanyDropdown ? (
-              <div className="dropdown-menu">
-                {companyRoles.map((item) => (
-                  <button
-                    key={item.company}
-                    type="button"
-                    className={`dropdown-item ${
-                      company === item.company ? 'active' : ''
-                    }`}
-                    onClick={() => handleCompanyChange(item.company)}
-                  >
-                    {item.company}
-                  </button>
-                ))}
+              <div className="dropdown-menu searchable-menu">
+                <input
+                  type="text"
+                  className="dropdown-search"
+                  placeholder="Search company, type, role..."
+                  value={companySearch}
+                  onChange={(event) => setCompanySearch(event.target.value)}
+                  onClick={(event) => event.stopPropagation()}
+                />
+
+                <div className="dropdown-scroll">
+                  {
+                    filteredCompanies.length > 0 ? (
+                      filteredCompanies.map((item) => (
+                        <button
+                          key={item.company}
+                          type="button"
+                          className={`dropdown-item ${
+                            company === item.company ? 'active' : ''
+                          }`}
+                          onClick={() => handleCompanyChange(item.company)}
+                        >
+                          <span>{item.company}</span>
+
+                          <small>
+                            {item.type || 'Company'}
+                            {item.category ? ` • ${item.category}` : ''}
+                          </small>
+                        </button>
+                      ))
+                    ) : (
+                      <div className="dropdown-empty">
+                        No company found
+                      </div>
+                    )
+                  }
+                </div>
               </div>
             ) : null}
           </div>
@@ -191,7 +307,7 @@ export default function UploadBox({
             Target Role
           </label>
 
-          <div className="custom-dropdown">
+          <div className="custom-dropdown searchable-dropdown">
             <button
               type="button"
               className="dropdown-btn"
@@ -200,31 +316,50 @@ export default function UploadBox({
                 setOpenCompanyDropdown(false)
               }}
             >
-              <span>{role}</span>
+              <span>{role || 'Select Role'}</span>
               <span>⌄</span>
             </button>
 
             {openRoleDropdown ? (
-              <div className="dropdown-menu">
-                {availableRoles.map((item) => (
-                  <button
-                    key={item}
-                    type="button"
-                    className={`dropdown-item ${
-                      role === item ? 'active' : ''
-                    }`}
-                    onClick={() => handleRoleChange(item)}
-                  >
-                    {item}
-                  </button>
-                ))}
+              <div className="dropdown-menu searchable-menu">
+                <input
+                  type="text"
+                  className="dropdown-search"
+                  placeholder="Search role..."
+                  value={roleSearch}
+                  onChange={(event) => setRoleSearch(event.target.value)}
+                  onClick={(event) => event.stopPropagation()}
+                />
+
+                <div className="dropdown-scroll">
+                  {
+                    filteredRoles.length > 0 ? (
+                      filteredRoles.map((item) => (
+                        <button
+                          key={item}
+                          type="button"
+                          className={`dropdown-item ${
+                            role === item ? 'active' : ''
+                          }`}
+                          onClick={() => handleRoleChange(item)}
+                        >
+                          <span>{item}</span>
+                        </button>
+                      ))
+                    ) : (
+                      <div className="dropdown-empty">
+                        No role found for this company
+                      </div>
+                    )
+                  }
+                </div>
               </div>
             ) : null}
           </div>
         </div>
       </div>
 
-      <div className="form-group">
+      <div className="form-group full">
         <label>
           Job Description
         </label>

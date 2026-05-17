@@ -1,32 +1,44 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 export default function AuthGuard({ children }) {
   const router = useRouter()
-  const [checkingAuth, setCheckingAuth] = useState(true)
+  const pathname = usePathname()
+
+  const [checking, setChecking] = useState(true)
 
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem('resumemind_auth')
+    const session = localStorage.getItem('resumemind_session')
 
-    if (!isLoggedIn) {
+    if (!session) {
       router.replace('/login')
       return
     }
 
-    setCheckingAuth(false)
-  }, [router])
+    setChecking(false)
+  }, [pathname, router])
 
-  if (checkingAuth) {
+  if (checking) {
     return (
-      <div className="page">
-        <div className="container">
-          <p style={{ color: '#cbd5e1', padding: '80px 0' }}>
-            Checking login...
+      <main className="page">
+        <div className="glow one"></div>
+        <div className="glow two"></div>
+        <div className="glow three"></div>
+
+        <div className="auth-loading">
+          <div className="auth-loader"></div>
+
+          <h2>
+            Checking your session...
+          </h2>
+
+          <p>
+            Preparing your ResumeMind AI workspace.
           </p>
         </div>
-      </div>
+      </main>
     )
   }
 
