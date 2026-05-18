@@ -1,7 +1,7 @@
 'use client'
 
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 export default function Navbar() {
@@ -9,60 +9,40 @@ export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
-    const user = localStorage.getItem('resumemind_user')
-    setIsLoggedIn(Boolean(user))
+    const checkSession = () => {
+      if (typeof window === 'undefined') return
+
+      const session = localStorage.getItem('resumemind_session')
+      setIsLoggedIn(Boolean(session))
+    }
+
+    checkSession()
+
+    window.addEventListener('storage', checkSession)
+    window.addEventListener('focus', checkSession)
+
+    return () => {
+      window.removeEventListener('storage', checkSession)
+      window.removeEventListener('focus', checkSession)
+    }
   }, [pathname])
-
-  const publicLinks = [
-    {
-      label: 'Home',
-      href: '/'
-    }
-  ]
-
-  const privateLinks = [
-    {
-      label: 'Dashboard',
-      href: '/dashboard'
-    },
-    {
-      label: 'Company Match',
-      href: '/company-match'
-    },
-    {
-      label: 'Templates',
-      href: '/templates'
-    }
-  ]
-
-  const guestLinks = [
-    {
-      label: 'Login',
-      href: '/login'
-    },
-    {
-      label: 'Signup',
-      href: '/signup'
-    }
-  ]
-
-  const links = isLoggedIn
-    ? [...publicLinks, ...privateLinks]
-    : [...publicLinks, ...guestLinks]
 
   const isActive = (href) => {
     if (href === '/') {
       return pathname === '/'
     }
 
-    return pathname.startsWith(href)
+    return pathname === href || pathname.startsWith(`${href}/`)
   }
 
   return (
     <nav className="navbar">
-      <Link href="/" className="brand">
+      <Link
+        href={isLoggedIn ? '/dashboard' : '/'}
+        className="brand"
+      >
         <span className="brand-icon">
-          R
+          🧠
         </span>
 
         <span>
@@ -71,17 +51,95 @@ export default function Navbar() {
       </Link>
 
       <div className="nav-links">
-        {
-          links.map((link) => (
+        {!isLoggedIn ? (
+          <>
             <Link
-              key={link.href}
-              href={link.href}
-              className={isActive(link.href) ? 'active' : ''}
+              href="/"
+              className={isActive('/') ? 'active' : ''}
             >
-              {link.label}
+              Home
             </Link>
-          ))
-        }
+
+            <Link
+              href="/templates"
+              className={isActive('/templates') ? 'active' : ''}
+            >
+              Templates
+            </Link>
+
+            <Link
+              href="/login"
+              className={isActive('/login') ? 'active' : ''}
+            >
+              Login
+            </Link>
+
+            <Link
+              href="/signup"
+              className={isActive('/signup') ? 'active' : ''}
+            >
+              Signup
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link
+              href="/dashboard"
+              className={isActive('/dashboard') ? 'active' : ''}
+            >
+              Dashboard
+            </Link>
+
+            <Link
+              href="/resumes"
+              className={isActive('/resumes') ? 'active' : ''}
+            >
+              Resumes
+            </Link>
+
+            <Link
+              href="/report"
+              className={isActive('/report') ? 'active' : ''}
+            >
+              Reports
+            </Link>
+
+            <Link
+              href="/editor"
+              className={isActive('/editor') ? 'active' : ''}
+            >
+              Editor
+            </Link>
+
+            <Link
+              href="/skills"
+              className={isActive('/skills') ? 'active' : ''}
+            >
+              Skills
+            </Link>
+
+            <Link
+              href="/templates"
+              className={isActive('/templates') ? 'active' : ''}
+            >
+              Templates
+            </Link>
+
+            <Link
+              href="/company-match"
+              className={isActive('/company-match') ? 'active' : ''}
+            >
+              Company Match
+            </Link>
+
+            <Link
+              href="/history"
+              className={isActive('/history') ? 'active' : ''}
+            >
+              History
+            </Link>
+          </>
+        )}
       </div>
     </nav>
   )

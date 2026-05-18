@@ -12,9 +12,24 @@ export default function ProfileMenu() {
   const [open, setOpen] = useState(false)
   const [ready, setReady] = useState(false)
   const [user, setUser] = useState(null)
+  const [stats, setStats] = useState({
+    analyses: 0,
+    reports: 0,
+    resumes: 0
+  })
 
   useEffect(() => {
-    const loadUser = () => {
+    const safeParse = (value, fallback = null) => {
+      try {
+        return JSON.parse(value)
+      } catch {
+        return fallback
+      }
+    }
+
+    const loadUserFromStorage = () => {
+      if (typeof window === 'undefined') return
+
       const session = localStorage.getItem('resumemind_session')
       const savedUser = localStorage.getItem('resumemind_user')
 
@@ -24,60 +39,108 @@ export default function ProfileMenu() {
         return
       }
 
-      if (savedUser) {
-        try {
-          setUser(JSON.parse(savedUser))
-        } catch {
-          setUser(null)
-        }
-      }
+      const parsedUser = savedUser
+        ? safeParse(savedUser)
+        : safeParse(session)
 
+      setUser(parsedUser)
       setReady(true)
     }
 
-    loadUser()
+    const loadStats = () => {
+      if (typeof window === 'undefined') return
+
+      const history = safeParse(
+        localStorage.getItem('resumemind_analysis_history') || '[]',
+        []
+      )
+
+      const reports = safeParse(
+        localStorage.getItem('resumemind_saved_reports') || '[]',
+        []
+      )
+
+      const resumes =
+        safeParse(
+          localStorage.getItem('resumemind_saved_resumes') || '[]',
+          []
+        ) ||
+        safeParse(
+          localStorage.getItem('resumemind_created_resumes') || '[]',
+          []
+        )
+
+      setStats({
+        analyses: Array.isArray(history) ? history.length : 0,
+        reports: Array.isArray(reports) ? reports.length : 0,
+        resumes: Array.isArray(resumes) ? resumes.length : 0
+      })
+    }
+
+    const syncLocalUser = (firebaseUser) => {
+      const providerId = firebaseUser.providerData?.[0]?.providerId || 'firebase'
+
+      const isTrustedProvider =
+        providerId === 'google.com' ||
+        providerId === 'microsoft.com'
+
+      const cleanUser = {
+        uid: firebaseUser.uid,
+        name:
+          firebaseUser.displayName ||
+          firebaseUser.email?.split('@')[0] ||
+          'ResumeMind User',
+        displayName:
+          firebaseUser.displayName ||
+          firebaseUser.email?.split('@')[0] ||
+          'ResumeMind User',
+        email: firebaseUser.email || '',
+        photoURL: firebaseUser.photoURL || '',
+        provider: providerId,
+        providerId,
+        emailVerified: isTrustedProvider || Boolean(firebaseUser.emailVerified),
+        loggedInAt: new Date().toISOString()
+      }
+
+      setUser(cleanUser)
+
+      localStorage.setItem('resumemind_user', JSON.stringify(cleanUser))
+      localStorage.setItem('resumemind_user_profile', JSON.stringify(cleanUser))
+      localStorage.setItem('resumemind_session', JSON.stringify(cleanUser))
+    }
+
+    loadUserFromStorage()
+    loadStats()
 
     let unsubscribe = null
 
     try {
       unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
         if (firebaseUser) {
-          const cleanUser = {
-            uid: firebaseUser.uid,
-            displayName: firebaseUser.displayName || 'ResumeMind User',
-            email: firebaseUser.email || '',
-            photoURL: firebaseUser.photoURL || ''
-          }
-
-          setUser(cleanUser)
-
-          localStorage.setItem(
-            'resumemind_user',
-            JSON.stringify(cleanUser)
-          )
-
-          localStorage.setItem(
-            'resumemind_session',
-            JSON.stringify({
-              uid: firebaseUser.uid,
-              loginMethod: 'firebase',
-              loggedInAt: new Date().toISOString()
-            })
-          )
+          syncLocalUser(firebaseUser)
         } else {
-          loadUser()
+          loadUserFromStorage()
         }
 
+        loadStats()
         setReady(true)
       })
     } catch {
-      loadUser()
+      loadUserFromStorage()
+      loadStats()
+      setReady(true)
     }
+
+    window.addEventListener('storage', loadUserFromStorage)
+    window.addEventListener('focus', loadStats)
 
     return () => {
       if (unsubscribe) {
         unsubscribe()
       }
+
+      window.removeEventListener('storage', loadUserFromStorage)
+      window.removeEventListener('focus', loadStats)
     }
   }, [pathname])
 
@@ -95,11 +158,16 @@ export default function ProfileMenu() {
     }
   }, [])
 
-  const hideOnAuthPages =
-    pathname === '/login' ||
-    pathname === '/signup'
+  const hiddenRoutes = [
+    '/',
+    '/login',
+    '/signup',
+    '/verify-email'
+  ]
 
-  if (!ready || hideOnAuthPages || !user) {
+  const hideProfileMenu = hiddenRoutes.includes(pathname)
+
+  if (!ready || hideProfileMenu || !user) {
     return null
   }
 
@@ -122,22 +190,28 @@ export default function ProfileMenu() {
     email?.charAt(0)?.toUpperCase() ||
     'U'
 
+  const goTo = (path) => {
+    setOpen(false)
+    router.push(path)
+  }
+
   const handleLogout = async () => {
     try {
       await signOut(auth)
     } catch {
       // Ignore Firebase logout issue and clear local session
+    } finally {
+      localStorage.removeItem('resumemind_user')
+      localStorage.removeItem('resumemind_user_profile')
+      localStorage.removeItem('resumemind_session')
+      localStorage.removeItem('resumemind_latest_analysis')
+      localStorage.removeItem('resumemind_latest_meta')
+
+      setOpen(false)
+      setUser(null)
+
+      router.push('/login')
     }
-
-    localStorage.removeItem('resumemind_user')
-    localStorage.removeItem('resumemind_session')
-    localStorage.removeItem('resumemind_latest_analysis')
-    localStorage.removeItem('resumemind_latest_meta')
-
-    setOpen(false)
-    setUser(null)
-
-    router.push('/login')
   }
 
   return (
@@ -148,110 +222,134 @@ export default function ProfileMenu() {
         onClick={() => setOpen((prev) => !prev)}
         aria-label="Open profile menu"
       >
-        {
-          photoURL ? (
-            <img
-              src={photoURL}
-              alt="Profile"
-              className="profile-floating-image"
-            />
-          ) : (
-            <span>
-              {initial}
-            </span>
-          )
-        }
+        {photoURL ? (
+          <img
+            src={photoURL}
+            alt="Profile"
+            className="profile-floating-image"
+          />
+        ) : (
+          <span>
+            {initial}
+          </span>
+        )}
       </button>
 
-      {
-        open ? (
-          <div className="profile-floating-dropdown">
-            <div className="profile-dropdown-header">
-              <div className="profile-dropdown-avatar">
-                {
-                  photoURL ? (
-                    <img src={photoURL} alt="Profile" />
-                  ) : (
-                    <span>{initial}</span>
-                  )
-                }
-              </div>
-
-              <div>
-                <h3>{displayName}</h3>
-                <p>{email}</p>
-              </div>
+      {open ? (
+        <div className="profile-floating-dropdown">
+          <div className="profile-dropdown-header">
+            <div className="profile-dropdown-avatar">
+              {photoURL ? (
+                <img src={photoURL} alt="Profile" />
+              ) : (
+                <span>{initial}</span>
+              )}
             </div>
 
-            <div className="profile-dropdown-stats">
-              <div>
-                <strong>0</strong>
-                <span>Analyses</span>
-              </div>
-
-              <div>
-                <strong>0</strong>
-                <span>Reports</span>
-              </div>
-
-              <div>
-                <strong>0</strong>
-                <span>Resumes</span>
-              </div>
-            </div>
-
-            <div className="profile-dropdown-actions">
-              <button
-                type="button"
-                onClick={() => {
-                  setOpen(false)
-                  router.push('/profile')
-                }}
-              >
-                👤 Your Profile
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setOpen(false)
-                  router.push('/history')
-                }}
-              >
-                📁 Analysis History
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setOpen(false)
-                  router.push('/templates')
-                }}
-              >
-                🧾 Saved Templates
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setOpen(false)
-                  router.push('/settings')
-                }}
-              >
-                ⚙️ Settings
-              </button>
-
-              <button
-                type="button"
-                className="logout-profile-btn"
-                onClick={handleLogout}
-              >
-                🚪 Logout
-              </button>
+            <div>
+              <h3>{displayName}</h3>
+              <p>{email}</p>
             </div>
           </div>
-        ) : null
-      }
+
+          <div className="profile-dropdown-stats">
+            <div>
+              <strong>{stats.analyses}</strong>
+              <span>Analyses</span>
+            </div>
+
+            <div>
+              <strong>{stats.reports}</strong>
+              <span>Reports</span>
+            </div>
+
+            <div>
+              <strong>{stats.resumes}</strong>
+              <span>Resumes</span>
+            </div>
+          </div>
+
+          <div className="profile-dropdown-actions">
+            <button
+              type="button"
+              onClick={() => goTo('/dashboard')}
+            >
+              📊 Dashboard
+            </button>
+
+            <button
+              type="button"
+              onClick={() => goTo('/resumes')}
+            >
+              📄 Saved Resumes
+            </button>
+
+            <button
+              type="button"
+              onClick={() => goTo('/report')}
+            >
+              📑 Reports
+            </button>
+
+            <button
+              type="button"
+              onClick={() => goTo('/editor')}
+            >
+              ✍️ Resume Editor
+            </button>
+
+            <button
+              type="button"
+              onClick={() => goTo('/skills')}
+            >
+              🧠 Skill Intelligence
+            </button>
+
+            <button
+              type="button"
+              onClick={() => goTo('/history')}
+            >
+              📁 Analysis History
+            </button>
+
+            <button
+              type="button"
+              onClick={() => goTo('/templates')}
+            >
+              🧾 Templates
+            </button>
+
+            <button
+              type="button"
+              onClick={() => goTo('/company-match')}
+            >
+              🏢 Company Match
+            </button>
+
+            <button
+              type="button"
+              onClick={() => goTo('/profile')}
+            >
+              👤 Your Profile
+            </button>
+
+            <button
+              type="button"
+              onClick={() => goTo('/settings')}
+            >
+              ⚙️ Settings
+            </button>
+
+            <button
+              type="button"
+              className="logout-profile-btn"
+              onClick={handleLogout}
+            >
+              🚪 Logout
+            </button>
+          </div>
+        </div>
+      ) : null}
     </div>
   )
 }

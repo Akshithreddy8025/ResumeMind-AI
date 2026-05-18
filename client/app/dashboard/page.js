@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 
 import Navbar from '../../components/Navbar'
-import ProfileMenu from '../../components/ProfileMenu'
 import ATSCard from '../../components/ATSCard'
 import UploadBox from '../../components/UploadBox'
 import SkillChart from '../../components/SkillChart'
@@ -853,6 +852,39 @@ export default function Dashboard() {
     })
   }
 
+  const openReportOnDashboard = (item) => {
+    if (!item) return
+
+    localStorage.setItem(
+      'resumemind_latest_analysis',
+      JSON.stringify(item)
+    )
+
+    localStorage.setItem(
+      'resumemind_latest_meta',
+      JSON.stringify({
+        ...(item.meta || {}),
+        savedAt: item.savedAt || new Date().toISOString()
+      })
+    )
+
+    if (item.result) {
+      setResult(item.result)
+    }
+
+    if (item.meta) {
+      setAnalysisMeta((previous) => ({
+        ...previous,
+        ...item.meta
+      }))
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
   const generateProfileSummary = () => {
     if (!result) return
 
@@ -1068,8 +1100,6 @@ export default function Dashboard() {
 
         <div className="container">
           <Navbar />
-          <ProfileMenu />
-
           <section className="dashboard-hero pro-dashboard-hero">
             <div className="hero-content">
               <span className="eyebrow">
@@ -1362,10 +1392,11 @@ export default function Dashboard() {
                     <div className="recent-report-list">
                       {
                         recentReports.map((item) => (
-                          <Link
-                            href={`/report/${item.id}`}
-                            className="recent-report-item"
+                          <button
+                            type="button"
+                            className="recent-report-item recent-report-button"
                             key={item.id}
+                            onClick={() => openReportOnDashboard(item)}
                           >
                             <div>
                               <h3>
@@ -1380,7 +1411,7 @@ export default function Dashboard() {
                             <strong>
                               {getReportScore(item)}%
                             </strong>
-                          </Link>
+                          </button>
                         ))
                       }
 
@@ -1421,6 +1452,7 @@ export default function Dashboard() {
           >
             <UploadBox
               setResult={handleSetResult}
+              analysisMeta={analysisMeta}
               setAnalysisMeta={handleSetAnalysisMeta}
             />
           </section>
@@ -1478,6 +1510,79 @@ export default function Dashboard() {
                     />
                   </div>
                 </section>
+                <section className="dashboard-section">
+  <div className="section-heading left">
+    <span className="eyebrow">
+      Workspace Shortcuts
+    </span>
+
+    <h2>
+      Continue your resume workflow
+    </h2>
+
+    <p>
+      Access saved resumes, reports, editor tools, and skill intelligence from one place.
+    </p>
+  </div>
+
+  <div className="quick-actions-grid">
+    <Link href="/resumes" className="quick-action-card">
+      <span className="quick-action-icon">
+        📄
+      </span>
+
+      <strong>
+        Saved Resumes
+      </strong>
+
+      <p>
+        View, manage, and continue improved resumes generated from your analysis.
+      </p>
+    </Link>
+
+    <Link href="/reports" className="quick-action-card">
+      <span className="quick-action-icon">
+        📑
+      </span>
+
+      <strong>
+        Reports
+      </strong>
+
+      <p>
+        Open saved ATS reports, company match results, and resume insights.
+      </p>
+    </Link>
+
+    <Link href="/editor" className="quick-action-card">
+      <span className="quick-action-icon">
+        ✍️
+      </span>
+
+      <strong>
+        Resume Editor
+      </strong>
+
+      <p>
+        Improve resume sections, rewrite content, and prepare export-ready resumes.
+      </p>
+    </Link>
+
+    <Link href="/skills" className="quick-action-card">
+      <span className="quick-action-icon">
+        🧠
+      </span>
+
+      <strong>
+        Skill Intelligence
+      </strong>
+
+      <p>
+        Track missing skills, keywords, role readiness, and improvement priorities.
+      </p>
+    </Link>
+  </div>
+</section>
 
                 <section className="resume-health-section">
                   <div className="section-heading left">
@@ -1806,31 +1911,40 @@ export default function Dashboard() {
                       )}
                     </div>
 
-                    <div className="card result-card roadmap-card">
-                      <span className="template-tag">
-                        Roadmap
-                      </span>
+                  </div>
+                </section>
 
-                      <h2>
-                        Role-Based Learning Roadmap
-                      </h2>
+                <section className="roadmap-section">
+                  <div className="section-heading left">
+                    <span className="eyebrow">
+                      Roadmap
+                    </span>
 
-                      <div className="roadmap-list">
-                        {
-                          roadmap.map((item, index) => (
-                            <div className="roadmap-item" key={index}>
-                              <span>
-                                {index + 1}
-                              </span>
+                    <h2>
+                      Role-Based Learning Roadmap
+                    </h2>
 
-                              <p>
-                                {item}
-                              </p>
-                            </div>
-                          ))
-                        }
-                      </div>
-                    </div>
+                    <p>
+                      Follow these role-based learning steps to strengthen your technical skills, resume, and interview readiness.
+                    </p>
+                  </div>
+
+                  <div className="roadmap-grid">
+                    {
+                      roadmap.map((item, index) => (
+                        <div className="roadmap-item" key={index}>
+                          <span className="roadmap-number">
+                            {index + 1}
+                          </span>
+
+                          <div className="roadmap-copy">
+                            <p>
+                              {item}
+                            </p>
+                          </div>
+                        </div>
+                      ))
+                    }
                   </div>
                 </section>
 
